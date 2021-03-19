@@ -189,6 +189,12 @@
 @property (null_resettable, nonatomic, copy) UIColor *doneButtonColor;
 
 /**
+Color for the 'ToolBar' button.
+Setting this will override the default color.
+*/
+@property (null_resettable, nonatomic, copy) UIColor *toolBarTintColor;
+
+/**
  Color for the 'Cancel' button.
  Setting this will override the default color.
  */

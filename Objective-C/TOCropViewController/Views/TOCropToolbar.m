@@ -56,16 +56,11 @@
 
 - (void)setup {
     self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
-    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.12f alpha:1.0f];
+    self.backgroundView.backgroundColor = _toolbarColor;
     [self addSubview:self.backgroundView];
     
-    // On iOS 9, we can use the new layout features to determine whether we're in an 'Arabic' style language mode
-    if (@available(iOS 9.0, *)) {
-        self.reverseContentLayout = ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft);
-    }
-    else {
-        self.reverseContentLayout = [[[NSLocale preferredLanguages] objectAtIndex:0] hasPrefix:@"ar"];
-    }
+    // Right now it is hardcoded. SHould change it as configurable from outside
+    self.reverseContentLayout = YES;
     
     // Get the resource bundle depending on the framework/dependency manager we're using
     NSBundle *resourceBundle = TO_CROP_VIEW_RESOURCE_BUNDLE_FOR_OBJECT(self);
@@ -227,17 +222,14 @@
             [buttonsInOrderHorizontally addObject:self.rotateCounterclockwiseButton];
         }
         
+        if (!self.rotateClockwiseButtonHidden) {
+            [buttonsInOrderHorizontally addObject:self.rotateClockwiseButton];
+        }
+        
         if (!self.resetButtonHidden) {
             [buttonsInOrderHorizontally addObject:self.resetButton];
         }
         
-        if (!self.clampButtonHidden) {
-            [buttonsInOrderHorizontally addObject:self.clampButton];
-        }
-        
-        if (!self.rotateClockwiseButtonHidden) {
-            [buttonsInOrderHorizontally addObject:self.rotateClockwiseButton];
-        }
         [self layoutToolbarButtons:buttonsInOrderHorizontally withSameButtonSize:buttonSize inContainerRect:containerRect horizontally:YES];
     }
     else {
@@ -265,16 +257,12 @@
             [buttonsInOrderVertically addObject:self.rotateCounterclockwiseButton];
         }
         
-        if (!self.resetButtonHidden) {
-            [buttonsInOrderVertically addObject:self.resetButton];
-        }
-        
-        if (!self.clampButtonHidden) {
-            [buttonsInOrderVertically addObject:self.clampButton];
-        }
-        
         if (!self.rotateClockwiseButtonHidden) {
             [buttonsInOrderVertically addObject:self.rotateClockwiseButton];
+        }
+        
+        if (!self.resetButtonHidden) {
+            [buttonsInOrderVertically addObject:self.resetButton];
         }
         
         [self layoutToolbarButtons:buttonsInOrderVertically withSameButtonSize:buttonSize inContainerRect:containerRect horizontally:NO];
@@ -287,8 +275,7 @@
     if (buttons.count > 0){
         NSInteger count = buttons.count;
         CGFloat fixedSize = horizontally ? size.width : size.height;
-        CGFloat maxLength = horizontally ? CGRectGetWidth(containerRect) : CGRectGetHeight(containerRect);
-        CGFloat padding = (maxLength - fixedSize * count) / (count + 1);
+        CGFloat padding = 20;
         
         for (NSInteger i = 0; i < count; i++) {
             UIButton *button = buttons[i];
@@ -296,7 +283,7 @@
             CGFloat diffOffset = padding + i * (fixedSize + padding);
             CGPoint origin = horizontally ? CGPointMake(diffOffset, sameOffset) : CGPointMake(sameOffset, diffOffset);
             if (horizontally) {
-                origin.x += CGRectGetMinX(containerRect);
+                origin.x += (CGRectGetMinX(containerRect) + (CGRectGetWidth(containerRect) / 2) - (((2 * padding) + fixedSize + (fixedSize / 2))));
                 if (@available(iOS 13.0, *)) {
                     UIImage *image = button.imageView.image;
                     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, image.baselineOffsetFromBottom, 0);
@@ -432,6 +419,14 @@
     [_cancelTextButton setTitleColor:_cancelButtonColor forState:UIControlStateNormal];
     [_cancelIconButton setTintColor:_cancelButtonColor];
     [_cancelTextButton sizeToFit];
+}
+
+- (void)setToolbarColor:(UIColor *)toolbarColor {
+    if (toolbarColor == nil || (toolbarColor == _toolbarColor)) { return; }
+    
+    self.backgroundView.backgroundColor  = toolbarColor;
+    
+    
 }
 
 - (void)setDoneButtonColor:(UIColor *)doneButtonColor {

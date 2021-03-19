@@ -417,6 +417,15 @@ open class CropViewController: UIViewController, TOCropViewControllerDelegate {
         set { toCropViewController.showOnlyIcons = newValue }
         get { return toCropViewController.showOnlyIcons }
     }
+    
+    /**
+    Color for the 'ToolBar' button.
+    Setting this will override the default color.
+    */
+    public var toolBarTintColor: UIColor? {
+        set { toCropViewController.toolBarTintColor = newValue }
+        get { return toCropViewController.toolBarTintColor }
+    }
 
     /**
     Color for the 'Done' button.

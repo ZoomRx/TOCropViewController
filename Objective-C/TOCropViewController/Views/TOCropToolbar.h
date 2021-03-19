@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /* Set an inset that will expand the background view beyond the bounds. */
 @property (nonatomic, assign) UIEdgeInsets backgroundViewOutsets;
 
+//Color of ToolBar
+@property (null_resettable, nonatomic, copy) UIColor *toolbarColor;
+
 /* The 'Done' buttons to commit the crop. The text button is displayed
  in portrait mode and the icon one, in landscape. */
 @property (nonatomic, strong, readonly) UIButton *doneTextButton;
