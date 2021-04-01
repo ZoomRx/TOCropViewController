@@ -39,7 +39,8 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
         //cropController.aspectRatioPickerButtonHidden = true
     
         // -- Uncomment this line of code to place the toolbar at the top of the view controller --
-        //cropController.toolbarPosition = .top
+        cropController.toolbarPosition = .top
+        cropController.showOnlyIcons = true
     
         //cropController.rotateButtonsHidden = true
         //cropController.rotateClockwiseButtonHidden = true
@@ -52,7 +53,9 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
         //cropController.toolbar.clampButtonHidden = true
 
         // Set toolbar action button colors
-        // cropController.doneButtonColor = UIColor.red
+         cropController.doneButtonColor = UIColor.white
+        cropController.cancelButtonColor = UIColor.white
+        cropController.toolBarTintColor = .blue
         // cropController.cancelButtonColor = UIColor.green
 
         self.image = image
